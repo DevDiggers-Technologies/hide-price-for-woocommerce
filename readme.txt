@@ -274,8 +274,6 @@ The admin and storefront JavaScript and CSS in `assets/` are compiled from the h
 
 https://github.com/DevDiggers-Technologies/hide-price-for-woocommerce
 
-The bundled DevDiggers framework JavaScript in `devdiggers-framework/assets/js/` (`framework.js`, `dashboard.js`, `dashboard-analytics.js`, `setup-wizard.js` and `review-notice.js`) is compiled from the source in `devdiggers-framework/src/`, which ships with the plugin together with its own `package.json`, `webpack.config.js` and `babel.config.js`. To rebuild it, run `npm install` and then `npm run build:free` inside the `devdiggers-framework/` folder.
-
 To build the assets from source:
 
 1. Run `npm install` to install the build dependencies listed in `package.json`.
