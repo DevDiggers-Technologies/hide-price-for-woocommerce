@@ -1,0 +1,29 @@
+# Files that do not belong in the DevDiggers Hide Price for WooCommerce repository.
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Zip files
+*.zip
+
+# Project files
+node_modules/
+
+# IDE files
+.idea
+.vscode/*
+project.xml
+project.properties
+.project
+.settings*
+*.sublime-project
+*.sublime-workspace
+.sublimelinterrc
+
+.git
+# Build output
+build/
+
+# Local tooling
+.claude/
