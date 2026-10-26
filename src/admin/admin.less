@@ -1,0 +1,86 @@
+/**
+ * Admin styles: the dashboard notice and the setup checklist.
+ */
+
+@primary: var(--ddfw-primary-color, #0256ff);
+@muted: #646970;
+
+.ddwchpg-dashboard-notice {
+	margin: 0 0 16px !important;
+}
+
+.ddwchpg-checklist-progress {
+	background: #f0f0f1;
+	border-radius: 999px;
+	height: 6px;
+	overflow: hidden;
+
+	span {
+		background: @primary;
+		display: block;
+		height: 100%;
+	}
+}
+
+.ddwchpg-checklist-count {
+	color: @muted;
+	font-size: 12px;
+	margin: 8px 0 4px;
+}
+
+.ddwchpg-checklist-item {
+	align-items: flex-start;
+	border-bottom: 1px solid #f0f0f1;
+	color: inherit;
+	display: flex;
+	gap: 12px;
+	padding: 10px 0;
+	text-decoration: none;
+
+	&:last-child {
+		border-bottom: 0;
+	}
+
+	&:hover strong {
+		color: @primary;
+	}
+}
+
+.ddwchpg-checklist-info {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+
+	span {
+		color: @muted;
+		font-size: 12px;
+	}
+}
+
+.ddwchpg-checklist-mark {
+	align-items: center;
+	border: 2px solid #c3c4c7;
+	border-radius: 50%;
+	box-sizing: border-box;
+	color: #fff;
+	display: inline-flex;
+	flex: none;
+	font-size: 12px;
+	font-weight: 700;
+	height: 20px;
+	justify-content: center;
+	margin-top: 1px;
+	width: 20px;
+}
+
+.ddwchpg-checklist-item-done {
+	.ddwchpg-checklist-mark {
+		background: @primary;
+		border-color: @primary;
+	}
+
+	strong {
+		color: @muted;
+		text-decoration: line-through;
+	}
+}
