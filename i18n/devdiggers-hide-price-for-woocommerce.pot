@@ -1,0 +1,869 @@
+# Copyright (C) 2026 DevDiggers
+# This file is distributed under the GPLv3 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: DevDiggers Hide Price for WooCommerce 1.0.0\n"
+"Report-Msgid-Bugs-To: "
+"https://wordpress.org/support/plugin/devdiggers-hide-price-for-woocommerce\n"
+"POT-Creation-Date: 2026-10-26 10:58:08+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2026-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: grunt-wp-i18n 1.0.3\n"
+
+#: functions.php:86
+#. translators: %1$s: opening link tag, %2$s: closing link tag
+msgid ""
+"DevDiggers Hide Price for WooCommerce is activated but not effective. It "
+"requires %1$sWooCommerce%2$s in order to work."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "DevDiggers Hide Price for WooCommerce"
+msgstr ""
+
+#: functions.php:124 includes/admin-dashboard.php:98
+msgid "Dashboard"
+msgstr ""
+
+#: functions.php:126 includes/admin-dashboard.php:113
+msgid "Configuration"
+msgstr ""
+
+#: functions.php:128
+msgid "Setup Wizard"
+msgstr ""
+
+#: functions.php:130
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: functions.php:147
+msgid "Support"
+msgstr ""
+
+#: functions.php:148
+msgid "Documentation"
+msgstr ""
+
+#: functions.php:149
+msgid "Review"
+msgstr ""
+
+#: helper/dashboard/dashboard-helper.php:65 includes/admin/setup-wizard.php:174
+#: templates/admin/configuration/configuration-general.php:120
+msgid "All products"
+msgstr ""
+
+#: helper/dashboard/dashboard-helper.php:66
+#: templates/admin/configuration/configuration-general.php:121
+msgid "Selected products and categories"
+msgstr ""
+
+#: helper/dashboard/dashboard-helper.php:67
+msgid "Per-product setting"
+msgstr ""
+
+#: helper/dashboard/dashboard-helper.php:171
+msgid "Turn price hiding on"
+msgstr ""
+
+#: helper/dashboard/dashboard-helper.php:172
+msgid "Prices stay public until the master switch is on."
+msgstr ""
+
+#: helper/dashboard/dashboard-helper.php:177
+msgid "Choose which products to protect"
+msgstr ""
+
+#: helper/dashboard/dashboard-helper.php:178
+msgid "Your whole catalog, or selected products and categories."
+msgstr ""
+
+#: helper/dashboard/dashboard-helper.php:183
+msgid "Word the hidden price message"
+msgstr ""
+
+#: helper/dashboard/dashboard-helper.php:184
+msgid "Tell visitors how to see prices, for example by logging in."
+msgstr ""
+
+#: helper/dashboard/dashboard-helper.php:189
+msgid "Check a product as a guest"
+msgstr ""
+
+#: helper/dashboard/dashboard-helper.php:190
+msgid "Open your shop in a private window to see what visitors see."
+msgstr ""
+
+#: includes/admin/admin-functions.php:219
+msgid "Price visibility"
+msgstr ""
+
+#: includes/admin/admin-functions.php:221
+msgid ""
+"Override DevDiggers Hide Price for this product. \"Always hide\" and "
+"\"Always show\" win over every other setting."
+msgstr ""
+
+#: includes/admin/admin-functions.php:223
+msgid "Follow plugin settings"
+msgstr ""
+
+#: includes/admin/admin-functions.php:224
+msgid "Always hide price"
+msgstr ""
+
+#: includes/admin/admin-functions.php:225
+msgid "Always show price"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:60
+msgid "DevDiggers Hide Price"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:61
+msgid ""
+"A few quick steps to decide who sees prices, which products are protected "
+"and what visitors can do instead of buying."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:65
+msgid "Welcome"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:69
+msgid "Audience"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:74 includes/admin-dashboard.php:122
+msgid "Display"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:79
+msgid "Ready!"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:80
+msgid "Your prices are protected."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:81
+msgid ""
+"Fine-tune exclusions and protection in Configuration, set a product to "
+"always hide or show from its edit screen, and watch button clicks on the "
+"dashboard."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:96
+msgid "Welcome to DevDiggers Hide Price!"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:97
+msgid ""
+"Hide prices from guests or any role, give visitors a login popup or your "
+"own link instead, and keep prices out of Google and the Store API."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:139
+msgid "Who should not see prices?"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:140
+msgid ""
+"Pick the visitors and products to protect. Exclusions and single products "
+"can be set later."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:144
+#: templates/admin/configuration/configuration-general.php:82
+msgid "Enable/Disable"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:145
+#: templates/admin/configuration/configuration-general.php:83
+msgid "Enable DevDiggers Hide Price for WooCommerce"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:146
+msgid "Turns price hiding on for your store."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:152
+#: templates/admin/configuration/configuration-general.php:90
+msgid "Hide Prices For"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:153
+msgid "Visitors who will not see prices. Most stores pick Guests."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:162
+#: templates/admin/configuration/configuration-general.php:100
+msgid "What to Hide"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:163
+msgid "Hide only the button to keep prices public but take orders another way."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:170
+#: templates/admin/configuration/configuration-general.php:116
+msgid "Hide Prices On"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:171
+msgid ""
+"Your whole catalog, or only some categories. Single products can be picked "
+"later in Configuration."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:175
+msgid "Only the categories I choose"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:184
+#: templates/admin/configuration/configuration-general.php:139
+msgid "Categories"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:185
+#: templates/admin/configuration/configuration-general.php:140
+msgid "Hide the price of every product in these categories."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:204
+msgid "What do visitors see instead?"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:205
+msgid ""
+"Give visitors a next step so a hidden price turns into a login instead of a "
+"lost visitor."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:209
+#: templates/admin/configuration/configuration-display.php:55
+msgid "Hidden Price Text"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:210
+msgid "Shown where the price would be."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:216
+#: templates/admin/configuration/configuration-display.php:85
+msgid "Button Action"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:217
+msgid "What replaces the add to cart button."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:220
+msgid "Login to see the price (popup)"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:221
+#: templates/admin/configuration/configuration-display.php:90
+msgid "Go to a custom URL"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:222
+#: templates/admin/configuration/configuration-display.php:91
+msgid "No button"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:232
+#: templates/admin/configuration/configuration-display.php:117
+msgid "Custom URL"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:233
+msgid ""
+"Where the button sends visitors, for example a contact or trade application "
+"page."
+msgstr ""
+
+#: includes/admin/setup-wizard.php:240
+#: templates/admin/configuration/configuration-display.php:101
+msgid "Button Text"
+msgstr ""
+
+#: includes/admin/setup-wizard.php:241
+#: templates/admin/configuration/configuration-display.php:102
+msgid "Label of the login or custom URL button."
+msgstr ""
+
+#: includes/admin-dashboard.php:91 includes/admin-dashboard.php:92
+#: includes/admin-dashboard.php:94
+msgid "Hide Price"
+msgstr ""
+
+#: includes/admin-dashboard.php:103
+msgid "Rules"
+msgstr ""
+
+#: includes/admin-dashboard.php:108
+msgid "Quote Requests"
+msgstr ""
+
+#: includes/admin-dashboard.php:117
+msgid "General"
+msgstr ""
+
+#: includes/admin-dashboard.php:152
+msgid "Hide prices with as many rules as your catalog needs, in Pro"
+msgstr ""
+
+#: includes/admin-dashboard.php:153
+msgid ""
+"Free hides prices on your whole store or on the products and categories you "
+"pick. Pro adds a rules engine, so wholesale ranges, members-only lines and "
+"launch previews each get their own audience, message and button."
+msgstr ""
+
+#: includes/admin-dashboard.php:155
+msgid ""
+"Match products by tag, type, price, stock, sale, featured, rating, reviews "
+"and published date"
+msgstr ""
+
+#: includes/admin-dashboard.php:156
+msgid "Combine conditions with ALL or ANY, and order rules by priority"
+msgstr ""
+
+#: includes/admin-dashboard.php:157
+msgid "A different audience, price text, button and link for every rule"
+msgstr ""
+
+#: includes/admin-dashboard.php:158
+msgid ""
+"Schedule a rule with start and end dates, for example to reveal prices at a "
+"launch"
+msgstr ""
+
+#: includes/admin-dashboard.php:159
+msgid "Duplicate, pause and reactivate rules in one click"
+msgstr ""
+
+#: includes/admin-dashboard.php:175
+msgid "Turn hidden prices into quote requests, with Pro"
+msgstr ""
+
+#: includes/admin-dashboard.php:176
+msgid ""
+"Visitors who will not log in still want a price. Pro swaps the button for a "
+"\"Request a Quote\" form and keeps every request in an inbox here."
+msgstr ""
+
+#: includes/admin-dashboard.php:178
+msgid "A quote form in a popup: name, email, phone, quantity and message"
+msgstr ""
+
+#: includes/admin-dashboard.php:179
+msgid ""
+"Every request listed with search, statuses (new, replied, closed) and bulk "
+"actions"
+msgstr ""
+
+#: includes/admin-dashboard.php:180
+msgid ""
+"Email alerts to your team, a copy to the customer, and replies that go "
+"straight to them"
+msgstr ""
+
+#: includes/admin-dashboard.php:181
+msgid "Spam protection with a honeypot and a per-visitor rate limit"
+msgstr ""
+
+#: includes/admin-dashboard.php:232
+msgid "Five star review"
+msgstr ""
+
+#: includes/admin-dashboard.php:235
+#. translators: %s: star rating link.
+msgid ""
+"If DevDiggers Hide Price for WooCommerce is working well for you, please "
+"leave us a %s rating. It really helps."
+msgstr ""
+
+#: includes/file-handler.php:76 includes/front/front-functions.php:97
+#: templates/admin/configuration/configuration-display.php:59
+msgid "Login to view price"
+msgstr ""
+
+#: includes/file-handler.php:77 includes/front/front-functions.php:154
+#: templates/admin/configuration/configuration-display.php:105
+msgid "Login to purchase"
+msgstr ""
+
+#: includes/front/front-functions.php:127
+msgid "Learn more"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:49
+msgid "Price Message"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:50
+msgid "What visitors see in place of the price."
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:56
+msgid ""
+"Basic HTML allowed. Placeholders: {login_url}, {register_url}, "
+"{product_name}. Example: <a href=\"{login_url}\">Login</a> to see wholesale "
+"prices"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:63
+msgid "Text Color"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:64
+msgid "Leave empty to use the theme price color."
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:70
+msgid "Background Color"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:71
+msgid "Shows the message as a badge. Leave empty for plain text."
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:79
+msgid "Replacement Button"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:80
+msgid ""
+"What replaces the add to cart button. A dead end loses the sale, so give "
+"visitors a next step."
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:86
+msgid ""
+"What visitors can do instead of buying. Logged-in visitors never see a "
+"login button."
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:89
+msgid "Login to see the price"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:109
+msgid "Login Popup"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:110
+msgid "Open the login form in a popup"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:111
+msgid ""
+"Visitors log in without leaving the product and land back on it. When off, "
+"the button goes to My Account."
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:118
+msgid ""
+"For example a contact page or a wholesale application form. With the login "
+"action, logged-in visitors in your audience get this link instead."
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:125
+msgid "Extra Button Classes"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:126
+msgid ""
+"Space separated CSS classes, for example \"alt\" to use your theme accent "
+"button."
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:134
+msgid "Request a Quote"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:135
+msgid "Give visitors who will not log in a way to ask for a price."
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:140
+msgid "Collect quote requests instead of losing the visitor, with Pro"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:141
+msgid ""
+"Pro adds \"Request a quote\" as a button action: a popup form on the "
+"product, an inbox in your dashboard and emails to you and the customer."
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:143
+msgid "Your own button text and success message"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:144
+msgid "Send new requests to one or several email addresses"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:145
+msgid "Email the customer a copy of their request"
+msgstr ""
+
+#: templates/admin/configuration/configuration-display.php:146
+msgid "Edit both emails under WooCommerce > Settings > Emails"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:44
+msgid "Guests (not logged in)"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:60
+msgid "Price and add to cart button"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:61
+msgid "Add to cart button only (keep the price)"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:76
+msgid "Plugin Settings"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:77
+msgid "Turn price hiding on and choose who it applies to."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:84
+msgid ""
+"Master switch. When off, every visitor sees prices and your settings stay "
+"as they are."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:91
+msgid ""
+"Visitors who do not see prices. Add roles such as Customer to run a "
+"wholesale or members-only catalog. Logged-in roles never get the login "
+"button: set a Custom URL under Display, such as your trade application "
+"page, and word the price text for them."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:101
+msgid ""
+"Hide only the button to keep prices public but take orders another way, "
+"such as a login or your contact page."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:110
+msgid "Where to Hide"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:111
+msgid "Protect your whole catalog, or only the products and categories you pick."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:117
+msgid ""
+"A product is protected when it is in one of the chosen categories or picked "
+"by name. Variations follow their product, or pick a single variation."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:130
+msgid "Products"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:131
+msgid "Hide the price of these products."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:150
+msgid "Exclusions"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:151
+msgid ""
+"Products that always show their price. The per-product setting on the "
+"product edit screen still wins."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:156
+msgid "Exclude Products"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:157
+msgid "Always show the price of these products."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:165
+msgid "Exclude Categories"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:166
+msgid "Always show the price of products in these categories."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:176
+msgid "Protection"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:177
+msgid ""
+"Hiding a price on screen is not enough: these options close the other "
+"places a price or a purchase can leak through."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:182
+msgid "Block Purchases"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:183
+msgid "Make protected products unpurchasable"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:184
+msgid ""
+"Stops direct ?add-to-cart= links, the block cart and any theme button from "
+"adding the product to the cart."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:190
+msgid "Search Results"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:191
+msgid "Remove prices from product schema markup"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:192
+msgid "Keeps Google from showing the hidden price in search results."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:198
+msgid "Blocks and Store API"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:199
+msgid "Remove prices from WooCommerce Store API responses"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:200
+msgid ""
+"Covers product blocks (All Products, product collections) and anyone "
+"reading /wp-json/wc/store/ directly."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:206
+msgid "Click Counter"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:207
+msgid "Count clicks on the replacement button"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:208
+msgid ""
+"Powers the dashboard. Only a daily total and a per-product total are "
+"stored, in your own database. Nothing about the visitor is kept."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:216
+msgid "Country Rules"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:217
+msgid "Hide prices only in some countries, or everywhere except some."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:222
+msgid "Hide prices by country, with Pro"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:223
+msgid ""
+"Sell openly at home and quote export customers, or keep a regional price "
+"list private."
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:225
+msgid "Hide prices only in the countries you choose, or everywhere except them"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:226
+msgid "Guests located with WooCommerce geolocation, customers by billing country"
+msgstr ""
+
+#: templates/admin/configuration/configuration-general.php:227
+msgid "Works together with roles and rules"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:58
+msgid "Price hiding is turned off, so every visitor sees prices."
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:60
+msgid "Price hiding is on but no product is protected yet."
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:66
+msgid "Fix it"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:112
+#. translators: %s: current user display name.
+msgid "Welcome back, %s!"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:113
+msgid "Which prices are hidden, and how often visitors try to see them"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:117
+msgid "Protected Products"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:120
+msgid "Published products, right now"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:124
+msgid "Catalog Protected"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:127
+msgid "Share of published products, right now"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:131
+#: templates/admin/dashboard/dashboard-template.php:143
+#: templates/admin/dashboard/dashboard-template.php:151
+msgid "Button Clicks"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:136
+msgid "No change vs previous period"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:156
+msgid "No clicks in this period"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:157
+msgid ""
+"Each time a visitor clicks the button that replaces add to cart, it shows "
+"up here."
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:162
+msgid "Why Prices Are Hidden"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:168
+msgid "No protected products"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:169
+msgid "Protected products are grouped here by the setting that hides them."
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:175
+msgid "Finish Setting Up"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:179
+msgid "Most Clicked Products"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:201
+msgid "See which hidden prices turn into customers"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:202
+msgid ""
+"Pro follows each click through to the login, the new account or the quote "
+"request it led to."
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:204
+msgid "Logins and signups that came from a hidden price, day by day"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:205
+msgid "Click to login rate, compared with the previous period"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:206
+msgid "Quote requests by status, and the latest ones at a glance"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:207
+msgid "Protected products grouped by the rule that hides them"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:230
+#. translators: 1: completed steps, 2: total steps.
+msgid "%1$d of %2$d steps done"
+msgstr ""
+
+#: templates/admin/dashboard/dashboard-template.php:268
+#. translators: %s: number of clicks.
+msgid "%s click"
+msgid_plural "%s clicks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/admin/dashboard/dashboard-template.php:273
+msgid "No clicks yet"
+msgstr ""
+
+#: templates/front/modals.php:14
+msgid "Close"
+msgstr ""
+
+#: templates/front/modals.php:15
+msgid "Login to see prices"
+msgstr ""
+
+#: templates/front/modals.php:19
+msgid "New here?"
+msgstr ""
+
+#: templates/front/modals.php:20
+msgid "Create an account"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://devdiggers.com/product/woocommerce-hide-price-for-guest/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Hide prices and the add to cart button from guests or chosen user roles, on "
+"your whole catalog or selected products and categories. Show a login popup "
+"or your own link instead, and stop hidden prices leaking through Google, "
+"blocks and the Store API."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "DevDiggers"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://devdiggers.com/"
+msgstr ""

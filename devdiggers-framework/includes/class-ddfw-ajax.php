@@ -1,0 +1,229 @@
+<?php
+/**
+ * File for handling AJAX requests in the DevDiggers Framework.
+ *
+ * @author DevDiggers
+ * @version 1.0.0
+ * @package DevDiggers\Framework
+ */
+
+defined( 'ABSPATH' ) || exit();
+
+if ( ! class_exists( 'DDFW_Ajax' ) ) {
+	/**
+	 * Class for handling AJAX requests in the DevDiggers Framework.
+	 */
+	class DDFW_Ajax {
+		/**
+		 * The single instance of the class.
+		 *
+		 * @var DDFW_Ajax
+		 */
+		private static $instance;
+
+		/**
+		 * Singleton implementation.
+		 *
+		 * @return DDFW_Ajax
+		 */
+		public static function instance() {
+			return ! is_null( self::$instance ) ? self::$instance : self::$instance = new self();
+		}
+
+		/**
+		 * Constructor to initialize hooks.
+		 */
+		public function __construct() {
+			add_action( 'wp_ajax_ddfw_get_products_list', [ $this, 'ddfw_get_products_list' ] );
+			add_action( 'wp_ajax_ddfw_get_categories_list', [ $this, 'ddfw_get_categories_list' ] );
+			add_action( 'wp_ajax_ddfw_get_users_list', [ $this, 'ddfw_get_users_list' ] );
+			add_action( 'wp_ajax_ddfw_newsletter_subscribe', [ $this, 'ddfw_newsletter_subscribe' ] );
+		}
+
+		/**
+		 * Get products list for AJAX requests.
+		 * 
+		 * @return void
+		 */
+		public function ddfw_get_products_list() {
+			$response = [];
+			if ( check_ajax_referer( 'ddfw-nonce', 'nonce', false ) && ( current_user_can( 'manage_options' ) || current_user_can( 'manage_woocommerce' ) ) ) {
+
+				$search_results = new \WP_Query( [
+					's'                   => ! empty( $_POST['query'] ) ? sanitize_text_field( wp_unslash( $_POST['query'] ) ) : '',
+					'post_type'           => [ 'product', 'product_variation' ],
+					'post_status'         => 'publish',
+					'ignore_sticky_posts' => 1,
+					'posts_per_page'      => 10,
+					'search_columns'      => [ 'post_title' ],
+					'fields'              => [ 'ID', 'post_title' ],
+				] );
+
+				if ( $search_results->have_posts() ) {
+					while ( $search_results->have_posts() ) {
+						$search_results->the_post();
+
+						$product_id = $search_results->post->ID;
+						$product    = wc_get_product( $product_id );
+
+						if ( 'variable' !== $product->get_type() ) {
+							$response[] = [
+								'ID'    => $product_id,
+								'title' => rawurldecode( wp_strip_all_tags( $product->get_formatted_name() ) ),
+							];
+						}
+					}
+				}
+
+				wp_reset_postdata();
+
+			} else {
+				$response = [
+					'success' => false,
+					'message' => esc_html__( 'Security check failed!', 'devdiggers-hide-price-for-woocommerce' ),
+				];
+			}
+			wp_send_json( $response );
+		}
+
+		/**
+		 * Get categories list for AJAX requests.
+		 * 
+		 * @return void
+		 */
+		public function ddfw_get_categories_list() {
+			$response = [];
+			if ( check_ajax_referer( 'ddfw-nonce', 'nonce', false ) && ( current_user_can( 'manage_options' ) || current_user_can( 'manage_woocommerce' ) ) ) {
+				$query = isset( $_POST[ 'query' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'query' ] ) ) : ''; // wpcs: input var okay.
+
+				$categories = get_terms( [
+					'taxonomy'   => 'product_cat',
+					'hide_empty' => false,
+					'search'     => esc_attr( $query ),
+				] );
+
+				$response = [
+					'success'    => true,
+					'message'    => '',
+					'categories' => $categories,
+				];
+			} else {
+				$response = [
+					'success' => false,
+					'message' => esc_html__( 'Security check failed!', 'devdiggers-hide-price-for-woocommerce' ),
+				];
+			}
+			wp_send_json( $response );
+		}
+
+		/**
+		 * Get users list for AJAX requests.
+		 *
+		 * @return void
+		 */
+		public function ddfw_get_users_list() {
+			$response = [];
+			if ( check_ajax_referer( 'ddfw-nonce', 'nonce', false ) && ( current_user_can( 'manage_options' ) || current_user_can( 'manage_woocommerce' ) ) ) {
+				$query = isset( $_POST[ 'query' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'query' ] ) ) : ''; // wpcs: input var okay.
+				$role  = isset( $_POST[ 'role' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'role' ] ) ) : ''; // wpcs: input var okay.
+
+				$query = new \WP_User_Query( [
+					'role'           => $role,
+					'search'         => '*' . esc_attr( $query ) . '*',
+					'search_columns' => [ 'user_login', 'user_email', 'display_name' ],
+					'fields'         => [ 'user_email', 'user_login', 'ID' ],
+				] );
+
+				$response = [
+					'error'   => false,
+					'message' => '',
+					'users'   => $query->get_results(),
+				];
+			} else {
+				$response = [
+					'error'   => true,
+					'message' => esc_html__( 'Security check failed!', 'devdiggers-hide-price-for-woocommerce' ),
+				];
+			}
+			wp_send_json( $response );
+		}
+
+		/**
+		 * Handle newsletter subscription
+		 *
+		 * @return void
+		 */
+		public function ddfw_newsletter_subscribe() {
+			if ( ! check_ajax_referer( 'ddfw-nonce', 'nonce', false ) ) {
+				wp_send_json_error( [ 'message' => esc_html__( 'Security check failed.', 'devdiggers-hide-price-for-woocommerce' ) ] );
+			}
+
+			if ( ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'manage_woocommerce' ) ) ) {
+				wp_send_json_error( [ 'message' => esc_html__( 'Insufficient permissions.', 'devdiggers-hide-price-for-woocommerce' ) ] );
+			}
+
+			$email = sanitize_email( wp_unslash( $_POST['email'] ?? '' ) );
+
+			if ( ! is_email( $email ) ) {
+				wp_send_json_error( [ 'message' => esc_html__( 'Please enter a valid email address.', 'devdiggers-hide-price-for-woocommerce' ) ] );
+			}
+
+			$user_id = get_current_user_id();
+			if ( ! $user_id ) {
+				wp_send_json_error( [ 'message' => esc_html__( 'You must be logged in to subscribe.', 'devdiggers-hide-price-for-woocommerce' ) ] );
+			}
+
+			// Check if already subscribed
+			$already_subscribed = get_option( 'ddfw_newsletter_subscribed' );
+			if ( $already_subscribed ) {
+				wp_send_json_error( [ 'message' => esc_html__( 'You are already subscribed to our newsletter.', 'devdiggers-hide-price-for-woocommerce' ) ] );
+			}
+
+			// Prepare data for FluentCRM webhook
+			$contact_data = [
+				'email'  => $email,
+				'tags'   => [ 'newsletter' ],
+				'source' => site_url(),
+			];
+
+			// Send to FluentCRM webhook
+			$response = wp_remote_post( 'https://devdiggers.com/?fluentcrm=1&route=contact&hash=28b2644f-9c13-4518-bd76-3666456d20b3', [
+				'method'  => 'POST',
+				'headers' => [
+					'Content-Type' => 'application/json',
+				],
+				'body'    => wp_json_encode( $contact_data ),
+				'timeout' => 15,
+			] );
+
+			if ( is_wp_error( $response ) ) {
+				wp_send_json_error( [ 'message' => esc_html__( 'Failed to connect to newsletter service. Please try again.', 'devdiggers-hide-price-for-woocommerce' ) ] );
+			}
+
+			$body = wp_remote_retrieve_body( $response );
+			$data = json_decode( $body, true );
+
+			if ( $data && isset( $data['success'] ) && $data['success'] ) {
+				// Mark as subscribed
+				update_option( 'ddfw_newsletter_subscribed', true );
+				update_option( 'ddfw_newsletter_email', $email );
+
+				wp_send_json_success( [ 'message' => esc_html__( 'Thank you for subscribing!', 'devdiggers-hide-price-for-woocommerce' ) ] );
+			} else {
+				$error_message = $data['message'] ?? esc_html__( 'Subscription failed. Please try again.', 'devdiggers-hide-price-for-woocommerce' );
+				wp_send_json_error( [ 'message' => $error_message ] );
+			}
+		}
+
+		/**
+		 * Check whether the current user can access framework AJAX helpers.
+		 *
+		 * @return bool
+		 */
+		protected function ddfw_current_user_can_manage() {
+			return current_user_can( 'manage_options' ) || current_user_can( 'manage_woocommerce' );
+		}
+	}
+}
+
+DDFW_Ajax::instance();

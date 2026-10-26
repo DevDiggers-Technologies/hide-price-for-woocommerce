@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<ruleset name="DevDiggers Hide Price for WooCommerce">
+	<description>WordPress Coding Standards for this plugin. The bundled devdiggers-framework is checked in its own repository, so it is excluded here.</description>
+
+	<file>.</file>
+
+	<exclude-pattern>*/devdiggers-framework/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/assets/*</exclude-pattern>
+	<exclude-pattern>*/i18n/*</exclude-pattern>
+	<!-- Build scripts, excluded from the release zip by .distignore. -->
+	<exclude-pattern>*/bin/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="ps"/>
+	<arg name="parallel" value="8"/>
+
+	<rule ref="WordPress">
+		<!-- This is a premium plugin distributed outside the WordPress.org
+			 directory, so the directory only packaging sniffs do not apply. -->
+		<exclude name="WordPress.WP.CapitalPDangit"/>
+
+		<!-- Short array syntax is the house style across every DevDiggers plugin
+			 and the shared framework. Switching this one plugin to array() would
+			 make it the odd one out for no benefit. -->
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+
+		<!-- The autoloader maps a class name onto a lowercase hyphenated path,
+			 so file names deliberately omit the class- prefix. Renaming the files
+			 to satisfy this sniff would stop every class from loading. -->
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+
+		<!-- A WooCommerce extension has to fire WooCommerce's own hooks. Prefixing them would
+			 mean nothing ever ran. Hooks the plugin itself defines are prefixed. -->
+		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound"/>
+	</rule>
+
+	<!-- Directory blockers, which carry a silence comment rather than a file
+		 docblock, exactly as WordPress core writes them. -->
+	<rule ref="Squiz.Commenting.FileComment">
+		<exclude-pattern>*/index.php</exclude-pattern>
+	</rule>
+
+	<config name="minimum_wp_version" value="5.0"/>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="devdiggers-hide-price-for-woocommerce"/>
+				<element value="woocommerce"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="ddwchpg"/>
+				<element value="DDWCHPG"/>
+				<element value="DDWCHidePriceForGuest"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
+		<properties>
+			<property name="blank_line_check" value="true"/>
+		</properties>
+	</rule>
+</ruleset>

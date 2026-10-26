@@ -1,0 +1,627 @@
+<?php
+/**
+ * File for handling the DevDiggers plugins form field functionalities.
+ *
+ * @author DevDiggers
+ * @version 1.0.0
+ * @package DevDiggers\Framework
+ */
+
+namespace DevDiggers\Framework\Includes;
+
+defined( 'ABSPATH' ) || exit();
+
+if ( ! class_exists( 'DDFW_Form_Field' ) ) {
+	/**
+	 * Class for handling the DevDiggers plugins form field functionalities.
+	 */
+	class DDFW_Form_Field {
+		/**
+		 * Display Form field function
+		 *
+		 * @param array $args
+		 * @return void
+		 */
+		public static function display_form_field( $args ) {
+			$defaults = [
+				'type'                 => 'text',
+				'name'                 => '',
+				'value'                => '',
+				'label'                => '',
+				'checkbox_label'       => '',
+				'checkbox_value'       => 'yes',
+				'description'          => '',
+				'placeholder'          => '',
+				'maxlength'            => false,
+				'required'             => false,
+				'autocomplete'         => false,
+				'id'                   => '',
+				'default_class'        => true,
+				'class'                => [],
+				'td_class'             => [],
+				'label_class'          => [],
+				'input_class'          => [],
+				'field_class'          => [],
+				'return'               => false,
+				'options'              => [],
+				'show_fields'          => [],
+				'only_hide_fields'     => [],
+				'custom_attributes'    => [],
+				'validate'             => [],
+				'default'              => '',
+				'autofocus'            => '',
+				'priority'             => '',
+				'after_field_text'     => '',
+				'show_frontend_fields' => false,
+				'radio_single_line'    => false,
+				'default_image'        => '',
+				'show_condition'       => true,
+				'td_colspan'           => '',
+			];
+
+			$args  = wp_parse_args( $args, $defaults );
+
+			if ( ! $args[ 'show_condition' ] ) {
+				return;
+			}
+
+			$value = $args[ 'value' ];
+
+			if ( ! empty( $args[ 'after_field_text' ] ) ) {
+				$args[ 'after_field_text' ] = '&emsp;' . $args[ 'after_field_text' ];
+			}
+
+			if ( ! empty( $args[ 'name' ] ) ) {
+				$name = $args[ 'name' ];
+			} else {
+				$name = '_' . str_replace( '-', '_', $args[ 'id' ] );
+			}
+
+			if ( empty( $args[ 'checkbox_label' ] ) ) {
+				$args[ 'checkbox_label' ] = $args[ 'label' ];
+			}
+
+			if ( empty( $args[ 'id' ] ) ) {
+				$args[ 'id' ] = str_replace( [ '[', ']', '_' ], [ '-', '', '-' ], $name );
+				$args[ 'id' ] = trim( $args[ 'id' ], '-' );
+			}
+
+			$args = apply_filters( 'ddfw_form_field_args', $args, $name, $value );
+
+			if ( is_string( $args['class'] ) ) {
+				$args['class'] = [ $args['class'] ];
+			}
+
+			if ( is_string( $args['td_class'] ) ) {
+				$args['td_class'] = [ $args['td_class'] ];
+			}
+
+			if ( $args['required'] ) {
+				$args['class'][] = 'validate-required';
+				// Marks the input itself, without the browser's own validation ( a required field hidden
+				// by a toggle would block the form ), so scripts such as the date picker can tell.
+				$args['custom_attributes']['data-required'] = 'true';
+				$required        = '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'devdiggers-hide-price-for-woocommerce' ) . '">*</abbr>';
+			} else {
+				$required = '';
+			}
+
+			if ( is_string( $args['label_class'] ) ) {
+				$args['label_class'] = [ $args['label_class'] ];
+			}
+
+			if ( is_null( $value ) ) {
+				$value = $args['default'];
+			}
+
+			$custom_attributes         = [];
+			$args['custom_attributes'] = array_filter( (array) $args['custom_attributes'], 'strlen' );
+
+			if ( $args['maxlength'] ) {
+				$args['custom_attributes']['maxlength'] = absint( $args['maxlength'] );
+			}
+
+			if ( ! empty( $args['autocomplete'] ) ) {
+				$args['custom_attributes']['autocomplete'] = $args['autocomplete'];
+			}
+
+			if ( true === $args['autofocus'] ) {
+				$args['custom_attributes']['autofocus'] = 'autofocus';
+			}
+
+			if ( $args['description'] && $args['id'] ) {
+				$args['custom_attributes']['aria-describedby'] = $args['id'] . '-description';
+			}
+
+			if ( ! empty( $args['custom_attributes'] ) && is_array( $args['custom_attributes'] ) ) {
+				foreach ( $args['custom_attributes'] as $attribute => $attribute_value ) {
+					$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+				}
+			}
+
+			if ( ! empty( $args['validate'] ) ) {
+				foreach ( $args['validate'] as $validate ) {
+					$args['class'][] = 'validate-' . $validate;
+				}
+			}
+
+			$field    = '';
+			$label_id = $args['id'];
+			$sort     = $args['priority'] ? $args['priority'] : '';
+			$is_admin = $args['show_frontend_fields'] ? false : is_admin();
+
+			if ( ! empty( $args['show_adminend_fields'] ) && $args['show_adminend_fields'] ) {
+				$is_admin = true;
+			}
+
+			if ( $is_admin ) {
+				$field_container = '<tr valign="top" ' . ( ! empty( $args['field_class'] ) ? 'class="' . esc_attr( implode( ' ', $args['field_class'] ) ) . '"' : '' ) . '>%1$s</tr>';
+			} else {
+				$field_container = '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide ' . esc_attr( implode( ' ', $args['field_class'] ) ) . '">%1$s</p>';
+			}
+
+			$default_input_class = $is_admin ? 'regular-text' : 'form-control woocommerce-Input woocommerce-Input--text input-text';
+
+			switch ( $args['type'] ) {
+				case 'country':
+					ob_start();
+					$countries = 'shipping_country' === $name ? WC()->countries->get_shipping_countries() : WC()->countries->get_allowed_countries();
+
+					if ( 1 === count( $countries ) ) {
+						?>
+						<strong><?php echo esc_html( current( array_values( $countries ) ) ); ?></strong>
+						<input type="hidden" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" value="<?php echo esc_attr( current( array_keys( $countries ) ) ); ?>" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?> class="country_to_state" readonly="readonly" />
+						<?php
+					} else {
+						$data_label = ! empty( $args['label'] ) ? 'data-label="' . esc_attr( $args['label'] ) . '"' : '';
+						?>
+						<select id="billing_country" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" class="country_to_state country_select <?php echo esc_attr( $default_input_class ); ?> <?php echo esc_attr( implode( ' ', $args['input_class'] ) ); ?>" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?> data-placeholder="<?php echo esc_attr( $args['placeholder'] ? $args['placeholder'] : esc_attr__( 'Select a country / region&hellip;', 'devdiggers-hide-price-for-woocommerce' ) ); ?>" <?php echo wp_kses_post( $data_label ); ?>>
+							<option value=""><?php esc_html_e( 'Select a country / region&hellip;', 'devdiggers-hide-price-for-woocommerce' ); ?></option>
+							<?php foreach ( $countries as $ckey => $cvalue ) : ?>
+								<option value="<?php echo esc_attr( $ckey ); ?>" <?php selected( $value, $ckey ); ?>><?php echo esc_html( $cvalue ); ?></option>
+							<?php endforeach; ?>
+						</select>
+						<noscript>
+							<button type="submit" name="woocommerce_checkout_update_totals" value="<?php esc_attr_e( 'Update country / region', 'devdiggers-hide-price-for-woocommerce' ); ?>">
+								<?php esc_html_e( 'Update country / region', 'devdiggers-hide-price-for-woocommerce' ); ?>
+							</button>
+						</noscript>
+						<?php
+					}
+					$field .= ob_get_clean();
+					break;
+
+				case 'state':
+					ob_start();
+					?>
+					<input type="text" class="<?php echo esc_attr( $default_input_class ); ?> <?php echo esc_attr( implode( ' ', $args['input_class'] ) ); ?>" value="<?php echo esc_attr( $value ); ?>"  placeholder="<?php echo esc_attr( $args['placeholder'] ); ?>" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?> data-input-classes="<?php echo esc_attr( implode( ' ', $args['input_class'] ) ); ?>"/>
+					<?php
+					$field .= ob_get_clean();
+					break;
+
+				case 'textarea':
+					ob_start();
+					?>
+					<textarea name="<?php echo esc_attr( $name ); ?>" class="<?php echo esc_attr( $default_input_class ); ?> <?php echo esc_attr( implode( ' ', $args['input_class'] ) ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" placeholder="<?php echo esc_attr( $args['placeholder'] ); ?>" <?php echo ( empty( $args['custom_attributes']['rows'] ) ? ' rows="4"' : '' ); ?> <?php echo ( empty( $args['custom_attributes']['cols'] ) ? ' cols="5"' : '' ); ?> <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?>><?php echo esc_textarea( $value ); ?></textarea>
+					<?php
+					$field .= ob_get_clean();
+					break;
+
+				case 'checkbox':
+					ob_start();
+					?>
+					<label class="checkbox <?php echo esc_attr( implode( ' ', $args['label_class'] ) ); ?>">
+						<?php // An unchecked box posts nothing, so without this the saved value can only ever be turned on. ?>
+						<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="" />
+						<input type="<?php echo esc_attr( $args['type'] ); ?>" class="input-checkbox <?php echo esc_attr( implode( ' ', $args['input_class'] ) ); ?>" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" value="<?php echo esc_attr( $args['checkbox_value'] ); ?>" <?php checked( $value, $args['checkbox_value'] ); ?> <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?> />
+						<?php echo wp_kses_post( $args['checkbox_label'] . $required ); ?>
+					</label>
+					<?php
+					$field .= ob_get_clean();
+					break;
+
+				case 'text':
+				case 'password':
+				case 'datetime-local':
+				case 'date':
+				case 'color':
+				case 'month':
+				case 'time':
+				case 'week':
+				case 'number':
+				case 'email':
+				case 'url':
+				case 'tel':
+					ob_start();
+					?>
+					<input type="<?php echo esc_attr( $args['type'] ); ?>" class="<?php echo esc_attr( $default_input_class ); ?> <?php echo esc_attr( implode( ' ', $args['input_class'] ) ); ?>" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" placeholder="<?php echo esc_attr( $args['placeholder'] ); ?>" value="<?php echo esc_attr( $value ); ?>" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?> />
+					<?php
+					$field .= ob_get_clean();
+					break;
+
+				case 'hidden':
+					ob_start();
+					?>
+					<input type="<?php echo esc_attr( $args['type'] ); ?>" class="input-hidden <?php echo esc_attr( implode( ' ', $args['input_class'] ) ); ?>" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" value="<?php echo esc_attr( $value ); ?>" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?> />
+					<?php
+					$field .= ob_get_clean();
+					break;
+
+				case 'select':
+					ob_start();
+					?>
+					<select name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" class="<?php echo esc_attr( $default_input_class ) . ' ' . esc_attr( implode( ' ', $args['input_class'] ) ); ?>" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?> data-placeholder="<?php echo esc_attr( $args['placeholder'] ); ?>" data-show-fields='<?php echo esc_attr( ! empty( $args['show_fields'] ) ? wp_json_encode( $args['show_fields'] ) : 'false' ); ?>' data-only-hide-fields='<?php echo esc_attr( ! empty( $args['only_hide_fields'] ) ? wp_json_encode( $args['only_hide_fields'] ) : 'false' ); ?>'>
+						<?php
+						if ( ! empty( $args['options'] ) ) {
+							foreach ( $args['options'] as $option_key => $option_text ) {
+								if ( '' === $option_key ) {
+									if ( empty( $args['placeholder'] ) ) {
+										$args['placeholder'] = $option_text ? $option_text : esc_html__( 'Choose an option', 'devdiggers-hide-price-for-woocommerce' );
+									}
+									$custom_attributes[] = 'data-allow_clear="true"';
+								}
+								if ( is_array( $value ) ) {
+									?>
+									<option value="<?php echo esc_attr( $option_key ); ?>" <?php echo in_array( $option_key, $value, true ) ? 'selected="selected"' : ''; ?>><?php echo esc_html( $option_text ); ?></option>
+									<?php
+								} else {
+									?>
+									<option value="<?php echo esc_attr( $option_key ); ?>" <?php selected( $value, $option_key ); ?>><?php echo esc_html( $option_text ); ?></option>
+									<?php
+								}
+							}
+						}
+						?>
+					</select>
+					<?php
+					$field .= ob_get_clean();
+					break;
+
+				case 'radio':
+					ob_start();
+					$label_id .= '_' . current( array_keys( $args['options'] ) );
+					if ( ! empty( $args['options'] ) ) {
+						foreach ( $args['options'] as $option_key => $option_text ) {
+							if ( ! $args['radio_single_line'] ) {
+								?><p><?php
+							}
+							?>
+							<input type="radio" class="<?php echo esc_attr( implode( ' ', $args['input_class'] ) ); ?>" value="<?php echo esc_attr( $option_key ); ?>" name="<?php echo esc_attr( $name ); ?>" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?> id="<?php echo esc_attr( $args['id'] ) . '_' . esc_attr( $option_key ); ?>" <?php checked( $value, $option_key ); ?> data-show-fields='<?php echo esc_attr( ! empty( $args['show_fields'] ) ? wp_json_encode( $args['show_fields'] ) : 'false' ); ?>' data-only-hide-fields='<?php echo esc_attr( ! empty( $args['only_hide_fields'] ) ? wp_json_encode( $args['only_hide_fields'] ) : 'false' ); ?>' />
+							<label for="<?php echo esc_attr( $args['id'] ) . '_' . esc_attr( $option_key ); ?>" class="radio <?php echo esc_attr( implode( ' ', $args['label_class'] ) ); ?>"><?php echo esc_html( $option_text ); ?></label>
+							<?php
+							if ( ! $args['radio_single_line'] ) {
+								?></p><?php
+							}
+						}
+					}
+					$field .= ob_get_clean();
+					break;
+
+				case 'editor':
+					// Defer the wp_editor() render to output time. Its core markup
+					// (TinyMCE container + inline init scripts) must never be passed
+					// through the ddfw_form_field filters or wp_kses(), so a plain-text
+					// placeholder is stored here and replaced with direct core output.
+					$editor_args = wp_parse_args(
+						$args,
+						[
+							'wpautop'       => true,    // Choose if you want to use wpautop.
+							'media_buttons' => true,    // Choose if showing media button(s).
+							'textarea_name' => $name,   // Set the textarea name to something different, square brackets [] can be used here.
+							'textarea_rows' => 10,      // Set the number of rows.
+							'tabindex'      => '',
+							'editor_css'    => '',      // Extra CSS styles to include in the editor iframe.
+							'editor_class'  => '',      // Add extra class(es) to the editor textarea.
+							'teeny'         => false,   // Output the minimal editor config used in Press This.
+							'dfw'           => false,   // Replace the default fullscreen with DFW (needs specific DOM elements and css).
+							'quicktags'     => true,    // Load Quicktags, can be used to pass settings directly to Quicktags using an array().
+							'tinymce'       => [
+								'content_css' => ''
+							],
+						]
+					);
+					$field .= '%%DDFW_EDITOR_FIELD%%';
+					break;
+
+				case 'image':
+					ob_start();
+					$image_src  = wp_get_attachment_image_src( $value, 'thumbnail' );
+					$image_url  = ! empty( $image_src ) ? $image_src[0] : ( $args['default_image'] ? $args['default_image'] : '' );
+					?>
+					<?php
+					// A compact row: the image ( or an empty tile ) with its buttons beside it, always
+					// visible. Class names and ids stay as they were, plugins script against them.
+					$image_icon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>';
+					?>
+					<div>
+						<div class="ddfw-image-upload regular-text">
+							<div class="ddfw-image-preview-container <?php echo esc_attr( $value || $args['default_image'] ? '' : 'ddfw-hide' ); ?>">
+								<div class="ddfw-image-preview-wrapper">
+									<img src="<?php echo esc_url( $image_url ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>-preview" alt="" />
+								</div>
+								<?php // Which image this is: shown from CSS, so it follows plugins that swap the default too. ?>
+								<span class="ddfw-image-upload-text ddfw-image-state">
+									<strong class="is-custom"><?php esc_html_e( 'Your image', 'devdiggers-hide-price-for-woocommerce' ); ?></strong>
+									<strong class="is-default"><?php esc_html_e( 'Default image', 'devdiggers-hide-price-for-woocommerce' ); ?></strong>
+									<span class="is-default"><?php esc_html_e( 'Replace it with your own', 'devdiggers-hide-price-for-woocommerce' ); ?></span>
+								</span>
+								<div class="ddfw-image-actions">
+									<button type="button" class="button ddfw-upload-image-button" data-id="<?php echo esc_attr( $args['id'] ); ?>" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?>><?php esc_html_e( 'Replace', 'devdiggers-hide-price-for-woocommerce' ); ?></button>
+									<button type="button" class="button-link ddfw-remove-image-button <?php echo esc_attr( $args['default_image'] && ! $value ? 'ddfw-hide' : '' ); ?>" data-id="<?php echo esc_attr( $args['id'] ); ?>" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?>><?php esc_html_e( 'Remove', 'devdiggers-hide-price-for-woocommerce' ); ?></button>
+								</div>
+							</div>
+							<div class="ddfw-image-upload-wrapper <?php echo esc_attr( $value || $args['default_image'] ? 'ddfw-hide' : '' ); ?>">
+								<?php // The whole card is the button: icon, label and hint. ?>
+								<button type="button" class="ddfw-upload-image-button ddfw-image-dropzone" data-id="<?php echo esc_attr( $args['id'] ); ?>" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?>>
+									<span class="ddfw-upload-icon-wrapper"><?php echo $image_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static markup. ?></span>
+									<span class="ddfw-image-upload-text">
+										<strong><?php esc_html_e( 'Upload image', 'devdiggers-hide-price-for-woocommerce' ); ?></strong>
+										<span><?php esc_html_e( 'From your media library', 'devdiggers-hide-price-for-woocommerce' ); ?></span>
+									</span>
+								</button>
+								<input type="hidden" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+								<input type="hidden" id="<?php echo esc_attr( $args['id'] ); ?>-default-image" value="<?php echo esc_attr( $args['default_image'] ? $args['default_image'] : '' ); ?>" />
+							</div>
+						</div>
+					</div>
+					<?php
+					$field .= ob_get_clean();
+					break;
+
+				case 'colorpicker':
+					ob_start();
+					?>
+					<input type="<?php echo esc_attr( $args['type'] ); ?>" class="ddfw-color-picker <?php echo esc_attr( $default_input_class ); ?> <?php echo esc_attr( implode( ' ', $args['input_class'] ) ); ?>" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" placeholder="<?php echo esc_attr( $args['placeholder'] ); ?>" value="<?php echo esc_attr( $value ); ?>" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?> data-default-value="<?php echo esc_attr( $value ); ?>" />
+					<?php
+					$field .= ob_get_clean();
+					break;
+
+				case 'products':
+					ob_start();
+					?>
+					<select name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" class="<?php echo esc_attr( $default_input_class ); ?> ddfw-products" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?> data-placeholder="<?php esc_attr_e( 'Search by name', 'devdiggers-hide-price-for-woocommerce' ); ?>">
+						<?php
+						if ( ! empty( $value ) ) {
+							if ( is_array( $value ) ) {
+								foreach ( $value as $product_id ) {
+									$product = wc_get_product( $product_id );
+									if ( $product ) {
+										?>
+										<option value="<?php echo esc_attr( $product_id ); ?>" selected="selected"><?php echo esc_html( wp_strip_all_tags( $product->get_formatted_name() ) ); ?></option>
+										<?php
+									}
+								}
+							} else {
+								$product = wc_get_product( $value );
+								if ( $product ) {
+									?>
+									<option value="<?php echo esc_attr( $product->get_id() ); ?>" selected="selected"><?php echo esc_html( wp_strip_all_tags( $product->get_formatted_name() ) ); ?></option>
+									<?php
+								}
+							}
+						}
+						?>
+					</select>
+					<?php
+					$field .= ob_get_clean();
+					break;
+
+				case 'categories':
+					ob_start();
+					?>
+					<select name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" class="<?php echo esc_attr( $default_input_class ); ?> ddfw-categories" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?> data-placeholder="<?php esc_attr_e( 'Search by name', 'devdiggers-hide-price-for-woocommerce' ); ?>">
+						<?php
+						if ( ! empty( $value ) ) {
+							if ( is_array( $value ) ) {
+								foreach ( $value as $category_id ) {
+									$category = get_term( $category_id, 'product_cat' );
+									if ( $category ) {
+										?>
+										<option value="<?php echo esc_attr( $category_id ); ?>" selected="selected"><?php echo esc_html( $category->name ); ?></option>
+										<?php
+									}
+								}
+							} else {
+								$category = get_term( $value, 'product_cat' );
+								if ( $category ) {
+									?>
+									<option value="<?php echo esc_attr( $category->term_id ); ?>" selected="selected"><?php echo esc_html( $category->name ); ?></option>
+									<?php
+								}
+							}
+						}
+						?>
+					</select>
+					<?php
+					$field .= ob_get_clean();
+					break;
+				case 'users':
+					ob_start();
+					?>
+					<select name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $args['id'] ); ?>" class="<?php echo esc_attr( $default_input_class ); ?> ddfw-users" <?php echo wp_kses_data( implode( ' ', $custom_attributes ) ); ?> data-placeholder="<?php esc_attr_e( 'Search Users', 'devdiggers-hide-price-for-woocommerce' ); ?>">
+						<?php
+						if ( ! empty( $value ) ) {
+							if ( is_array( $value ) ) {
+								foreach ( $value as $user_id ) {
+									$user = get_user_by( 'ID', $user_id );
+									if ( $user ) {
+										?>
+										<option value="<?php echo esc_attr( $user_id ); ?>" selected="selected"><?php echo esc_html( '(#' . $user->ID . ') ' . $user->user_login . ' <' . $user->user_email . '>' ); ?></option>
+										<?php
+									}
+								}
+							} else {
+								$user = get_user_by( 'ID', $value );
+								if ( $user ) {
+									?>
+									<option value="<?php echo esc_attr( $user->ID ); ?>" selected="selected"><?php echo esc_html( '(#' . $user->ID . ') ' . $user->user_login . ' <' . $user->user_email . '>' ); ?></option>
+									<?php
+								}
+							}
+						}
+						?>
+					</select>
+					<?php
+					$field .= ob_get_clean();
+					break;
+				case 'two_input_columns':
+					ob_start();
+					?>
+					<div class="<?php echo esc_attr( ( isset( $args['default_class'] ) && ! $args['default_class'] ? '' : 'ddfw-two-input-columns' ) . ( ! empty( $args['class'] ) ? ' ' . implode( ' ', $args['class'] ) : '' ) ); ?>">
+						<?php
+						if ( ! empty( $args['columns'] ) ) {
+							foreach ( $args['columns'] as $column ) {
+								if ( empty( $column[ 'name' ] ) ) {
+									$column[ 'name' ] = '_' . str_replace( '-', '_', $column[ 'id' ] ?? uniqid() );
+								}
+								$wrapper = ! empty( $column['wrapper'] ) ? $column['wrapper'] : 'span'; ?>
+								<<?php echo esc_attr( $wrapper ); ?>>
+									<?php if ( ! empty( $column['label'] ) ) : ?>
+										<span class="ddfw-column-label"><?php echo esc_html( $column['label'] ); ?></span>
+									<?php endif; ?>
+									<?php echo wp_kses_post( isset( $column['prefix'] ) ? $column['prefix'] : '' ); ?>
+									<input
+										type="<?php echo esc_attr( $column['type'] ); ?>"
+										name="<?php echo esc_attr( $column['name'] ); ?>"
+										id="<?php echo esc_attr( $column['id'] ?? uniqid() ); ?>"
+										value="<?php echo esc_attr( $column['value'] ?? '' ); ?>"
+										<?php echo ! empty( $column['class'] ) ? 'class="' . esc_attr( implode( ' ', (array) $column['class'] ) ) . '"' : ''; ?>
+										<?php echo ! empty( $column['placeholder'] ) ? 'placeholder="' . esc_attr( $column['placeholder'] ) . '"' : ''; ?>
+										<?php echo isset( $column['min'] ) ? 'min="' . esc_attr( $column['min'] ) . '"' : ''; ?>
+										<?php echo ! empty( $column['custom_attributes'] ) ? implode( ' ', array_map( fn( $k, $v ) => esc_attr( $k ) . '="' . esc_attr( $v ) . '"', array_keys( $column['custom_attributes'] ), $column['custom_attributes'] ) ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Each name and value is escaped above. ?>
+									/>
+									<?php echo wp_kses_post( isset( $column['suffix'] ) ? $column['suffix'] : '' ); ?>
+								</<?php echo esc_attr( $wrapper ); ?>>
+								<?php
+							}
+						}
+						?>
+					</div>
+					<?php
+					$field .= ob_get_clean();
+					break;
+				case 'user_roles':
+					ob_start();
+					global $wp_roles;
+					$all_roles      = $wp_roles->roles;
+					$selected_roles = is_array( $value ) ? $value : [];
+					?>
+					<select
+						id="<?php echo esc_attr( $args['id'] ); ?>"
+						class="regular-text"
+						name="<?php echo esc_attr( $args['name'] ); ?>"
+						multiple
+						data-placeholder="<?php esc_attr_e( 'Search by role', 'devdiggers-hide-price-for-woocommerce' ); ?>"
+					>
+						<?php
+						if ( ! empty( $all_roles ) ) {
+							foreach ( $all_roles as $key => $role_data ) {
+								?>
+								<option value="<?php echo esc_attr( $key ); ?>" <?php selected( in_array( $key, $selected_roles, true ) ); ?>>
+									<?php echo esc_html( $role_data['name'] ); ?>
+								</option>
+								<?php
+							}
+						}
+						?>
+					</select>
+					<?php
+					$field .= ob_get_clean();
+					break;
+				case 'field_html':
+					$field = ! empty( $args['html'] ) ? $args['html'] : '';
+					break;
+			}
+
+			if ( ! empty( $field ) ) {
+				$field_html = '';
+
+				if ( $args['label'] ) {
+					if ( $is_admin ) {
+						ob_start();
+						?>
+						<th>
+							<label <?php echo ! empty( $label_id ) ? 'for="' . esc_attr( $label_id ) . '"' : ''; ?> <?php echo ! empty( $args['label_class'] ) ? 'class="' . esc_attr( implode( ' ', $args['label_class'] ) ) . '"' : ''; ?>>
+								<?php echo wp_kses_post( $args['label'] . $required ); ?>
+							</label>
+						</th>
+						<?php
+						$field_html .= ob_get_clean();
+					} else {
+						ob_start();
+						?>
+						<label <?php echo ! empty( $label_id ) ? 'for="' . esc_attr( $label_id ) . '"' : ''; ?> <?php echo ! empty( $args['label_class'] ) ? 'class="' . esc_attr( implode( ' ', $args['label_class'] ) ) . '"' : ''; ?>>
+							<?php echo wp_kses_post( $args['label'] . $required ); ?>
+						</label>
+						<?php
+						$field_html .= ob_get_clean();
+					}
+				}
+
+				if ( $is_admin ) {
+					$field_html .= '<td ' . ( ! empty( $args['td_class'] ) ? 'class="' . esc_attr( implode( ' ', $args['td_class'] ) ) . '"' : '' ) . ( ! empty( $args['td_colspan'] ) ? ' colspan="' . esc_attr( $args['td_colspan'] ) . '"' : '' ) . '>'; // phpcs:ignore
+				}
+
+				$field_html .= $field . $args[ 'after_field_text' ];
+
+				if ( $args['description'] ) {
+					if ( $is_admin ) {
+						ob_start();
+						?>
+						<p class="description"<?php echo $args['id'] ? ' id="' . esc_attr( $args['id'] ) . '-description"' : ''; ?>>
+							<?php echo wp_kses_post( $args['description'] ); ?>
+						</p>
+						<?php
+						$field_html .= ob_get_clean();
+					} else {
+						ob_start();
+						?>
+						<i class="description"<?php echo $args['id'] ? ' id="' . esc_attr( $args['id'] ) . '-description"' : ''; ?>>
+							<?php echo wp_kses_post( $args['description'] ); ?>
+						</i>
+						<?php
+						$field_html .= ob_get_clean();
+					}
+				}
+
+				if ( $is_admin ) {
+					$field_html .= '</td>';
+				}
+
+				$field = sprintf( $field_container, $field_html );
+			}
+
+			$field = apply_filters( 'ddfw_form_field_' . $args[ 'type' ], $field, $name, $args, $value );
+			$field = apply_filters( 'ddfw_form_field', $field, $name, $args, $value );
+
+			if ( 'editor' === $args[ 'type' ] ) {
+				// The surrounding wrapper went through the ddfw_form_field filters, so
+				// it is escaped with wp_kses() on output. The editor itself is rendered
+				// straight from wp_editor() (core escapes its own markup, which wp_kses
+				// would otherwise strip), so no filtered/untrusted string is echoed.
+				$parts = explode( '%%DDFW_EDITOR_FIELD%%', $field, 2 );
+
+				if ( $args[ 'return' ] ) {
+					ob_start();
+					wp_editor( $value, $args[ 'id' ], $editor_args );
+					$editor_html = ob_get_clean();
+
+					return wp_kses( $parts[0], ddfw_kses_allowed_form_html() ) . $editor_html . ( isset( $parts[1] ) ? wp_kses( $parts[1], ddfw_kses_allowed_form_html() ) : '' );
+				}
+
+				echo wp_kses( $parts[0], ddfw_kses_allowed_form_html() );
+				wp_editor( $value, $args[ 'id' ], $editor_args );
+				if ( isset( $parts[1] ) ) {
+					echo wp_kses( $parts[1], ddfw_kses_allowed_form_html() );
+				}
+				return;
+			}
+
+			if ( $args[ 'return' ] ) {
+				return $field;
+			}
+
+			echo wp_kses( $field, ddfw_kses_allowed_form_html() );
+		}
+	}
+}
