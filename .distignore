@@ -1,4 +1,4 @@
-# Files that do not belong in the WordPress.org zip. src/ and the build config ship so the assets can be rebuilt.
+# Files that do not belong in the WordPress.org zip. Source and build config live on GitHub (see readme.txt).
 .distignore
 .git
 .gitignore
@@ -9,6 +9,12 @@ node_modules
 composer.json
 composer.lock
 Gruntfile.js
+src
+config
+package.json
+webpack.config.js
+babel.config.js
+.editorconfig
 package-lock.json
 phpcs.xml
 *.tar.gz

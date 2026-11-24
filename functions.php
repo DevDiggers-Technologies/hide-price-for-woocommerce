@@ -5,7 +5,7 @@
  * Plugin URI: https://devdiggers.com/product/woocommerce-hide-price-for-guest/
  * Author: DevDiggers
  * Author URI: https://devdiggers.com/
- * Version: 1.0.0
+ * Version: 1.1.0
  * Text Domain: devdiggers-hide-price-for-woocommerce
  * Domain Path: /i18n
  * Requires at least: 6.5

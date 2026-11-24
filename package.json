@@ -1,6 +1,6 @@
 {
   "name": "devdiggers-hide-price-for-woocommerce",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "DevDiggers Hide Price for WooCommerce",
   "main": "index.js",
   "scripts": {
