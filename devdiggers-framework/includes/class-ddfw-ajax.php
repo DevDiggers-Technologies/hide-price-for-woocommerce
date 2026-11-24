@@ -210,7 +210,7 @@ if ( ! class_exists( 'DDFW_Ajax' ) ) {
 
 				wp_send_json_success( [ 'message' => esc_html__( 'Thank you for subscribing!', 'devdiggers-hide-price-for-woocommerce' ) ] );
 			} else {
-				$error_message = $data['message'] ?? esc_html__( 'Subscription failed. Please try again.', 'devdiggers-hide-price-for-woocommerce' );
+				$error_message = ! empty( $data['message'] ) ? sanitize_text_field( $data['message'] ) : esc_html__( 'Subscription failed. Please try again.', 'devdiggers-hide-price-for-woocommerce' );
 				wp_send_json_error( [ 'message' => $error_message ] );
 			}
 		}

@@ -2,10 +2,10 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: DevDiggers Hide Price for WooCommerce 1.0.0\n"
+"Project-Id-Version: DevDiggers Hide Price for WooCommerce 1.1.0\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/devdiggers-hide-price-for-woocommerce\n"
-"POT-Creation-Date: 2026-10-26 10:58:08+00:00\n"
+"POT-Creation-Date: 2026-11-24 17:15:33+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -310,7 +310,8 @@ msgid "Label of the login or custom URL button."
 msgstr ""
 
 #: includes/admin-dashboard.php:91 includes/admin-dashboard.php:92
-#: includes/admin-dashboard.php:94
+#: includes/admin-dashboard.php:94 includes/integrations/mcp-integration.php:77
+#: includes/integrations/mcp-integration.php:100
 msgid "Hide Price"
 msgstr ""
 
@@ -402,18 +403,169 @@ msgid ""
 "leave us a %s rating. It really helps."
 msgstr ""
 
-#: includes/file-handler.php:76 includes/front/front-functions.php:97
+#: includes/file-handler.php:79 includes/front/front-functions.php:97
 #: templates/admin/configuration/configuration-display.php:59
 msgid "Login to view price"
 msgstr ""
 
-#: includes/file-handler.php:77 includes/front/front-functions.php:154
+#: includes/file-handler.php:80 includes/front/front-functions.php:154
 #: templates/admin/configuration/configuration-display.php:105
 msgid "Login to purchase"
 msgstr ""
 
 #: includes/front/front-functions.php:127
 msgid "Learn more"
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:78
+msgid ""
+"Ask which products hide their price and from whom, why a product's price is "
+"hidden or shown, how many clicks the login button gets, and how price "
+"hiding is set up."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:101
+msgid ""
+"Hidden prices: who they are hidden from, on which products, and what "
+"visitors see instead."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:185
+msgid "Product or variation ID."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:200
+msgid "Hide price overview"
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:201
+msgid ""
+"How price hiding is set up and doing: whether it is on, who prices are "
+"hidden from (roles, \"ddwchpg_guest\" is logged out visitors), whether only "
+"the price or only Add to Cart is hidden, which products and categories are "
+"covered or excluded, what visitors see instead, how many published products "
+"are protected, and clicks on the replacement button for a date range "
+"against the previous period, with the most clicked products. Start here."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:205
+msgid ""
+"First day, Y-m-d in the store timezone. Defaults to 29 days before "
+"\"before\"."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:206
+msgid "Last day, Y-m-d. Defaults to today."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:219
+msgid "Products with a hidden price"
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:220
+msgid ""
+"Published products whose price is hidden from the targeted visitors, with "
+"the reason: \"all\" (whole catalog), \"selected\" (a chosen product or "
+"category) or \"override\" (the product's own \"Always hide\" setting). A "
+"variable product is listed when any variation is hidden. Products set to "
+"\"Always show\" are listed with reason \"shown_override\" when you ask for "
+"them."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:246
+msgid "Check a product's price visibility"
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:247
+msgid ""
+"Whether one product's price is hidden, why (whole catalog, a selected "
+"product or category, the product's own override, or an exclusion that keeps "
+"it visible), from which roles, whether a given role sees it, and what is "
+"shown instead (message, button and where it goes, whether buying is "
+"blocked). Find the product by ID or SKU."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:254
+msgid ""
+"Role key to check, such as customer or wholesale_customer, or \"guest\" for "
+"logged out visitors."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:272
+#: includes/integrations/mcp-integration.php:817
+msgid "Hidden price audit"
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:273
+msgid ""
+"Check that prices are hidden from the right visitors on the right products, "
+"spot gaps and leaks, and see whether the replacement button gets clicks."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:284
+msgid "Set a product's price visibility"
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:285
+msgid ""
+"Set the \"Price visibility\" override on one product, as on its edit "
+"screen: \"hide\" always hides the price from the targeted visitors, "
+"\"show\" always shows it, \"default\" follows the plugin settings again. "
+"For a variation, the parent product is changed. Returns the previous value "
+"so the change can be undone."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:386
+msgid "Guest (logged out)"
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:422
+msgid ""
+"Product not found. Give a product_id or sku; "
+"hide-price-list-hidden-products lists products with a hidden price."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:521
+msgid "\"after\" must be on or before \"before\"."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:677
+#. translators: %s: role keys.
+msgid "Unknown role. Use one of: %s"
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:767
+msgid "Visibility must be \"default\", \"hide\" or \"show\"."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:774
+msgid "You may not edit this product."
+msgstr ""
+
+#: includes/integrations/mcp-integration.php:823
+msgid ""
+"Audit how my store hides prices.\n"
+"\n"
+"Use the Hide Price tools:\n"
+"1. hide-price-overview for the setup, how many products are protected and "
+"the button clicks of the last 30 days.\n"
+"2. hide-price-list-hidden-products (every page) to see which products are "
+"hidden and why, and again with reason shown_override for products forced to "
+"show.\n"
+"3. hide-price-check-product for two or three of the most clicked products, "
+"as a guest and as customer.\n"
+"\n"
+"Then report:\n"
+"- Whether price hiding is on, who prices are hidden from, and whether only "
+"Add to Cart or the price too is hidden.\n"
+"- How many published products are protected out of how many, and the "
+"reasons.\n"
+"- Gaps: products or categories you would expect to be hidden that are not "
+"(exclusions, \"Always show\" overrides), and leaks (buying not blocked, "
+"prices left in search results or the Store API).\n"
+"- Whether the replacement button is clicked, and the most clicked products.\n"
+"- Up to three changes, most important first.\n"
+"Stick to what the tools return and do not change anything."
 msgstr ""
 
 #: templates/admin/configuration/configuration-display.php:49

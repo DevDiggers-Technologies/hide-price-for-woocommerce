@@ -34,6 +34,9 @@ if ( ! class_exists( 'DDWCHPG_File_Handler' ) ) {
 				new Admin\DDWCHPG_Setup_Wizard( $this->ddwchpg_configuration );
 			}
 
+			// AI assistants (MCP): answers about the setup even while price hiding is switched off.
+			new Integrations\DDWCHPG_MCP_Integration( $this->ddwchpg_configuration );
+
 			if ( empty( $this->ddwchpg_configuration['enabled'] ) ) {
 				return;
 			}

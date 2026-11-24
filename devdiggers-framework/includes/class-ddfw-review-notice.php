@@ -69,12 +69,6 @@ if ( ! class_exists( 'DDFW_Review_Notice' ) ) {
 				return false;
 			}
 
-			// Only on the main Dashboard and the Plugins screen, never across the whole admin.
-			$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
-			if ( ! $screen || ! in_array( $screen->id, [ 'dashboard', 'plugins' ], true ) ) {
-				return false;
-			}
-
 			$prefix = $this->args['plugin_prefix'];
 
 			// Check if dismissed permanently.

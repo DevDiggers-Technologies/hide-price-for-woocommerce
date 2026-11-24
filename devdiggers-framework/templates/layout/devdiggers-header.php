@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || exit(); // Exit if accessed directly.
 $current_page = ! empty( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
 $hub_tabs     = [
 	ddfw_get_parent_menu_slug() => esc_html__( 'Dashboard', 'devdiggers-hide-price-for-woocommerce' ),
+	'devdiggers-mcp'            => esc_html__( 'AI & MCP', 'devdiggers-hide-price-for-woocommerce' ),
 	'devdiggers-extensions'     => esc_html__( 'Extensions', 'devdiggers-hide-price-for-woocommerce' ),
 ];
 ?>

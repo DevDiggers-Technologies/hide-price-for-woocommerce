@@ -10,22 +10,11 @@
 defined( 'ABSPATH' ) || exit(); // Exit if accessed directly.
 
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Template scope variables are local include variables.
-// Nothing is requested from devdiggers.com until an administrator opts in on this page (off by default).
-$remote_allowed = 'yes' === get_option( 'ddfw_extensions_remote_consent', 'no' );
-
-if ( ! $remote_allowed && isset( $_GET['ddfw_load_extensions'] ) ) {
-	$load_nonce = sanitize_text_field( wp_unslash( $_GET['ddfw_load_extensions'] ) );
-
-	if ( wp_verify_nonce( $load_nonce, 'ddfw_load_extensions' ) && ( current_user_can( 'manage_options' ) || current_user_can( 'manage_woocommerce' ) ) ) {
-		update_option( 'ddfw_extensions_remote_consent', 'yes', false );
-		$remote_allowed = true;
-	}
-}
-
 $plugins_api      = DDFW_Plugins_API::instance();
-$website_plugins  = $remote_allowed ? $plugins_api->get_website_plugins() : [];
-$featured_plugins = $remote_allowed ? $plugins_api->get_featured_plugins() : [];
-$plugin_stats     = $remote_allowed ? $plugins_api->get_plugin_statistics() : [ 'total_plugins' => 0 ];
+$has_consent      = $plugins_api->has_consent();
+$website_plugins  = $plugins_api->get_website_plugins();
+$featured_plugins = $plugins_api->get_featured_plugins();
+$plugin_stats     = $plugins_api->get_plugin_statistics();
 
 // Featured extensions are not repeated in the full list.
 $featured_urls = wp_list_pluck( $featured_plugins, 'url' );
@@ -42,7 +31,7 @@ $svg_tags = ddfw_kses_allowed_svg_tags();
 $stats = [
 	[
 		'label' => esc_html__( 'Total Extensions', 'devdiggers-hide-price-for-woocommerce' ),
-		'value' => $plugin_stats['total_plugins'],
+		'value' => $plugin_stats['total_plugins'] ?? 0,
 		'icon'  => '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/>',
 	],
 	[
@@ -104,16 +93,49 @@ $render_card = function ( $plugin ) {
 			</div>
 		</div>
 
-		<?php if ( ! $remote_allowed ) : ?>
+		<?php if ( ! $has_consent ) : ?>
+			<?php
+			$small_svg_open = str_replace( [ 'width="20"', 'height="20"' ], [ 'width="16"', 'height="16"' ], $svg_open );
+			$consent_points = [
+				esc_html__( 'Your server fetches the public list from devdiggers.com and your browser loads its images.', 'devdiggers-hide-price-for-woocommerce' ),
+				esc_html__( 'No personal or store data is sent, only the standard details of a web request, such as your IP address.', 'devdiggers-hide-price-for-woocommerce' ),
+				esc_html__( 'The list is cached for a day, and you can stop loading it at any time.', 'devdiggers-hide-price-for-woocommerce' ),
+			];
+			?>
 			<div class="ddfw-dashboard-section">
-				<div class="ddfw-section-header">
-					<h2><?php esc_html_e( 'Load the extensions list', 'devdiggers-hide-price-for-woocommerce' ); ?></h2>
-					<p><?php esc_html_e( 'The list of extensions and their images is downloaded from devdiggers.com. Nothing is requested until you click the button below. Your site address and IP are visible to devdiggers.com when the list is loaded.', 'devdiggers-hide-price-for-woocommerce' ); ?></p>
+				<div class="ddfw-extensions-consent">
+					<div class="ddfw-extensions-consent-main">
+						<div class="ddfw-stat-icon"><?php echo wp_kses( $svg_open . '<path d="M12 13v8"/><path d="m8 17 4 4 4-4"/><path d="M20 16.6A5 5 0 0 0 18 7h-1.3A8 8 0 1 0 4 15.3"/></svg>', $svg_tags ); ?></div>
+						<div class="ddfw-extensions-consent-text">
+							<h2><?php esc_html_e( 'Browse DevDiggers extensions here', 'devdiggers-hide-price-for-woocommerce' ); ?></h2>
+							<p><?php esc_html_e( 'The list lives on devdiggers.com, so nothing is loaded from there until you choose to.', 'devdiggers-hide-price-for-woocommerce' ); ?></p>
+							<ul class="ddfw-extensions-consent-points">
+								<?php foreach ( $consent_points as $consent_point ) : ?>
+									<li><?php echo wp_kses( $small_svg_open . '<path d="M20 6 9 17l-5-5"/></svg>', $svg_tags ); ?><span><?php echo esc_html( $consent_point ); ?></span></li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					</div>
+					<form method="post" class="ddfw-extensions-consent-actions">
+						<?php wp_nonce_field( 'ddfw_extensions_consent_action', 'ddfw_extensions_nonce' ); ?>
+						<input type="hidden" name="ddfw_extensions_consent" value="yes" />
+						<button type="submit" class="ddfw-button ddfw-button-primary"><?php esc_html_e( 'Load extensions', 'devdiggers-hide-price-for-woocommerce' ); ?></button>
+						<a class="ddfw-button ddfw-button-secondary" href="https://devdiggers.com/woocommerce-extensions/" target="_blank" rel="noopener noreferrer">
+							<?php esc_html_e( 'Browse on devdiggers.com', 'devdiggers-hide-price-for-woocommerce' ); ?>
+							<?php echo wp_kses( $small_svg_open . '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>', $svg_tags ); ?>
+						</a>
+					</form>
 				</div>
-				<p>
-					<a class="ddfw-button ddfw-button-primary" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=devdiggers-extensions' ), 'ddfw_load_extensions', 'ddfw_load_extensions' ) ); ?>"><?php esc_html_e( 'Load extensions from devdiggers.com', 'devdiggers-hide-price-for-woocommerce' ); ?></a>
-					<a class="ddfw-button" href="https://devdiggers.com/woocommerce-extensions/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Browse on devdiggers.com', 'devdiggers-hide-price-for-woocommerce' ); ?></a>
-				</p>
+
+				<div class="ddfw-plugins-grid ddfw-extensions-skeleton" aria-hidden="true">
+					<?php for ( $skeleton = 0; $skeleton < 4; $skeleton++ ) : ?>
+						<div class="ddfw-plugin-card">
+							<span class="ddfw-skeleton-image"></span>
+							<span class="ddfw-skeleton-line"></span>
+							<span class="ddfw-skeleton-line ddfw-skeleton-line-short"></span>
+						</div>
+					<?php endfor; ?>
+				</div>
 			</div>
 		<?php else : ?>
 		<div class="ddfw-dashboard-stats">
@@ -150,6 +172,14 @@ $render_card = function ( $plugin ) {
 				</div>
 			</div>
 		<?php endif; ?>
+
+		<form method="post" class="ddfw-extensions-revoke">
+			<?php wp_nonce_field( 'ddfw_extensions_consent_action', 'ddfw_extensions_nonce' ); ?>
+			<input type="hidden" name="ddfw_extensions_consent" value="no" />
+			<?php echo wp_kses( str_replace( [ 'width="20"', 'height="20"' ], [ 'width="16"', 'height="16"' ], $svg_open ) . '<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>', $svg_tags ); ?>
+			<span><?php esc_html_e( 'This list is loaded from devdiggers.com because you allowed it.', 'devdiggers-hide-price-for-woocommerce' ); ?></span>
+			<button type="submit"><?php esc_html_e( 'Stop loading it', 'devdiggers-hide-price-for-woocommerce' ); ?></button>
+		</form>
 		<?php endif; ?>
 	</div>
 </div>

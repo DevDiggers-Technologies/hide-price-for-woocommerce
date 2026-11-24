@@ -1,4 +1,4 @@
-=== DevDiggers Hide Price for WooCommerce ===
+=== Hide Price for WooCommerce - Login to See Price, Hide Add to Cart & Catalog Mode ===
 Contributors: devdiggers
 Plugin URI: https://devdiggers.com/product/woocommerce-hide-price-for-guest/
 Author: DevDiggers
@@ -9,7 +9,7 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 9.0
 WC tested up to: 11.2
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -19,16 +19,17 @@ Hide WooCommerce prices and Add to Cart from guests or any user role. Show a log
 
 Some stores should not show prices to everyone. A wholesaler only quotes trade customers. A members club keeps its prices for members. A manufacturer wants dealers to log in before they see a price list. And plenty of shops simply want visitors to create an account before they can buy.
 
-**DevDiggers Hide Price for WooCommerce** hides the price and the Add to Cart button from the visitors you choose, on your whole catalog or only on the products and categories you pick. In their place, visitors see your own message, such as "Login to view price", and a button that gives them a next step: a login popup that brings them straight back to the product, or a link to your contact or trade application page.
+Hide Price for WooCommerce is a free **[WooCommerce hide price plugin](https://devdiggers.com/product/woocommerce-hide-price-for-guest/)** that hides the price and the Add to Cart button from the visitors you choose, on your whole catalog or only on the products and categories you pick. In their place, visitors see your own message, such as "Login to view price", and a button that gives them a next step: a login popup that brings them straight back to the product, or a link to your contact or trade application page.
 
 A hidden price is also removed from the product's schema markup and from WooCommerce Store API responses used by block themes, and protected products cannot be added to the cart, so the price stays hidden everywhere the plugin hides it.
 
 = Quick links =
 
-* [Source code on GitHub](https://github.com/DevDiggers-Technologies/hide-price-for-woocommerce)
+* [Free Demo](https://demo.devdiggers.com/hide-price-for-woocommerce/)
 * [Pro Demo](https://demo.devdiggers.com/woocommerce-hide-price-for-guest/)
 * [Documentation](https://docs.devdiggers.com/woocommerce-hide-price-for-guest/)
 * [Support](https://wordpress.org/support/plugin/devdiggers-hide-price-for-woocommerce/)
+* [Free vs Pro Comparison](https://devdiggers.com/product/woocommerce-hide-price-for-guest/#free-vs-pro)
 * [Upgrade to Pro](https://devdiggers.com/product/woocommerce-hide-price-for-guest/)
 
 = How it works =
@@ -88,6 +89,14 @@ A hidden price is also removed from the product's schema markup and from WooComm
 * A setup wizard gets you running in four short steps
 * The dashboard shows how many products are protected, why each one is protected, and how many times visitors clicked the replacement button, with a trend chart and your most clicked products
 * A checklist on the dashboard shows what is left to set up
+
+=== AI assistants (MCP) ===
+
+* Ask Claude, ChatGPT, Cursor, VS Code or any MCP client which products hide their price, why a product's price is hidden or shown for a role, and how often the login button is clicked
+* A Hidden price audit prompt checks your setup for gaps and leaks
+* Optional: let the assistant set a product's price visibility override, off until you allow changes and logged under WooCommerce > Status > Logs
+* Store managers only. Managed in DevDiggers Plugins > AI & MCP, with an on / off switch per plugin and per write tool, a Try panel and an activity log
+* Needs WordPress 6.9 or later and the MCP Adapter, which WooCommerce 10.3 and later bundle
 
 = Who this is for =
 
@@ -225,14 +234,15 @@ Open a topic in the [support forum](https://wordpress.org/support/plugin/devdigg
 
 == Screenshots ==
 
-1. A guest sees "Login to view price" and a login button instead of the price and Add to Cart.
-2. The login popup on the product page, which brings the visitor back to the same product.
-3. The dashboard with protected products, button clicks and why prices are hidden.
-4. General settings: who does not see prices, what to hide and which products.
-5. Exclusions and the protection options for schema markup, the Store API and direct purchases.
-6. Display settings for the price message and the replacement button.
-7. The Price visibility setting on the product edit screen.
-8. The setup wizard.
+1. The dashboard with protected products, button clicks and why prices are hidden.
+2. A guest sees your message and a login button instead of the price and Add to Cart.
+3. The login popup on the product page, which brings the visitor back to the same product.
+4. The shop as a guest: protected products show your message, an excluded product keeps its price.
+5. General settings: who does not see prices, what to hide and which products.
+6. Exclusions and the protection options for schema markup, the Store API and direct purchases.
+7. Display settings for the price message and the replacement button.
+8. The Price visibility setting on the product edit screen.
+9. The setup wizard.
 
 == External services ==
 
@@ -270,7 +280,7 @@ This plugin contains no licence checks, no update checks and no telemetry.
 
 == Source code and build tools ==
 
-The admin and storefront JavaScript and CSS in `assets/` are compiled from the human readable source in the `src/` folder, which ships with the plugin together with the build configuration (`package.json`, `webpack.config.js` and `babel.config.js`). The complete source is also published in our public GitHub repository:
+The admin and storefront JavaScript and CSS in `assets/` are compiled from the `src/` folder with webpack and Babel. The complete, human readable source code, including all build configuration, is published in our public GitHub repository:
 
 https://github.com/DevDiggers-Technologies/hide-price-for-woocommerce
 
@@ -282,6 +292,14 @@ To build the assets from source:
 Two third party libraries used by the admin screens ship unmodified under the MIT licence inside `devdiggers-framework/assets/js/`: Chart.js (https://www.chartjs.org) and Select2 (https://select2.org).
 
 == Changelog ==
+
+= 1.1.0 =
+* Added: AI assistants (MCP). Ask Claude, ChatGPT, Cursor, VS Code or any MCP client which products hide their price, why a product's price is hidden or shown for a role, and how often the replacement button is clicked, with a Hidden price audit prompt.
+* Added: An optional AI tool to set a product's Price visibility override (always hide, always show or follow the settings). It stays off until you turn on Allow changes.
+* Added: DevDiggers Plugins > AI & MCP page. Connect Claude, ChatGPT, Claude Code, Codex, Cursor, VS Code or any MCP client by signing in and clicking Allow in WordPress, with nothing to copy. Turn each plugin and each write tool on or off, try tools in the Try panel and check the activity log.
+* Improved: Updated the DevDiggers framework to 1.3.0. On edit screens the title bar with Save stays visible while you scroll on desktop.
+* Improved: The plugin zip no longer includes the development source and build files. The full source stays in the public GitHub repository.
+* Fixed: Charts and pickers no longer break when a theme or plugin replaces the shared select2 script.
 
 = 1.0.0 =
 * Initial free release.
@@ -298,6 +316,9 @@ Two third party libraries used by the admin screens ship unmodified under the MI
 * Translation ready, with WPML support for the price text, button text and custom URL.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Adds AI assistants (MCP) and the DevDiggers framework 1.3.0.
 
 = 1.0.0 =
 First release. After activating, run the setup wizard to choose who does not see prices.
