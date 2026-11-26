@@ -8,7 +8,7 @@
  * Version: 1.1.0
  * Text Domain: devdiggers-hide-price-for-woocommerce
  * Domain Path: /i18n
- * Requires at least: 6.5
+ * Requires at least: 6.9
  * Requires PHP: 7.4
  * WC requires at least: 9.0
  * WC tested up to: 11.2
