@@ -8,7 +8,7 @@
 
 | Requirement | Version |
 | --- | --- |
-| WordPress | 6.5+ (tested up to 7.1) |
+| WordPress | 6.9+ (tested up to 7.1) |
 | WooCommerce | 9.0+ (tested up to 11.2) |
 | PHP | 7.4+ |
 
